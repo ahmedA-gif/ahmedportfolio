@@ -1,5 +1,4 @@
 {
-    "version": 2,
     "builds": [
       {
         "src": "ai_portfolio/wsgi.py",
@@ -11,11 +10,6 @@
         "src": "/(.*)",
         "dest": "ai_portfolio/wsgi.py"
       }
-    ],
-    "env": {
-      "SECRET_KEY": "@django_secret_key",
-      
-      "ALLOWED_HOSTS": ".vercel.app"
-    }
+    ]
   }
   
