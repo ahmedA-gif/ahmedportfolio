@@ -193,26 +193,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnLoading = submitBtn.querySelector('.btn-loading');
     
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
+        // REMOVED: e.preventDefault() 
+        // By removing it, the form will now actually submit to your database.
         
-        // Show loading state
+        // Show loading state so the user sees the "AI" animation while the DB saves
         submitBtn.classList.add('loading');
         btnText.style.display = 'none';
         btnLoading.style.display = 'flex';
         
-        // Simulate form submission (replace with actual AJAX call)
-        setTimeout(() => {
-            alert('Thank you! Your message has been sent successfully. I\'ll get back to you within 24 hours.');
-            
-            // Reset form
-            form.reset();
-            submitBtn.classList.remove('loading');
-            btnText.style.display = 'flex';
-            btnLoading.style.display = 'none';
-        }, 2000);
+        // No setTimeout needed! The page will naturally refresh 
+        // once Django confirms the data is saved in Neon.
     });
     
-    // Add focus effects to form fields
+    // Keep the focus effects (they look great!)
     const formFields = form.querySelectorAll('input, select, textarea');
     formFields.forEach(field => {
         field.addEventListener('focus', function() {

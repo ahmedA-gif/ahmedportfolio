@@ -4,7 +4,7 @@ from .models import Contact
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ['name', 'email', 'subject', 'message']
+        fields = ['name', 'email', 'subject', 'message','budget', 'timeline']
         widgets = {
             'name': forms.TextInput(attrs={
                 'placeholder': 'Your Full Name',

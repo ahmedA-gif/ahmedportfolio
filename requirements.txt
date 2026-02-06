@@ -5,3 +5,4 @@ whitenoise==6.6.0
 django-crispy-forms==2.1
 crispy-bootstrap5==0.7
 psycopg2-binary==2.9.11  # only if using PostgreSQL in production
+python-dotenv
