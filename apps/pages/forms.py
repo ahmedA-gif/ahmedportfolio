@@ -4,7 +4,7 @@ from .models import Contact
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ['name', 'email', 'subject', 'message','budget', 'timeline']
+        fields = ['name', 'email', 'subject', 'message', 'budget', 'timeline']
         widgets = {
             'name': forms.TextInput(attrs={
                 'placeholder': 'Your Full Name',
@@ -17,15 +17,23 @@ class ContactForm(forms.ModelForm):
                 'required': True
             }),
             'subject': forms.TextInput(attrs={
-                'placeholder': 'AI Project Discussion / Collaboration',
+                'placeholder': 'AI Project Discussion',
                 'class': 'form-control',
                 'required': True
             }),
             'message': forms.Textarea(attrs={
-                'placeholder': 'Tell me about your AI project ideas or how we can collaborate...',
+                'placeholder': 'Tell me about your project...',
                 'class': 'form-control',
                 'rows': 6,
                 'required': True
+            }),
+            'budget': forms.TextInput(attrs={
+                'placeholder': 'Your budget (optional)',
+                'class': 'form-control'
+            }),
+            'timeline': forms.TextInput(attrs={
+                'placeholder': 'Project timeline (optional)',
+                'class': 'form-control'
             }),
         }
     
