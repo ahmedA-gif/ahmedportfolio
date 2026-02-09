@@ -49,23 +49,28 @@ def about(request):
     }
     return render(request, 'pages/about.html', context)
 
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.contrib import messages
+from .forms import ContactForm
+
 def contact(request):
-    """Contact page with form handling"""
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            contact = form.save()
-            
-            # AJAX response
+            form.save()
+            print("SUCCESS: Data saved to Neon!") 
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
                     'success': True,
-                    'message': 'Thank you! Your message has been sent. I\'ll get back to you soon!'
+                    'message': 'Thank you! Your message has been sent.'
                 })
             else:
-                messages.success(request, 'Thank you! Your message has been sent successfully.')
+                messages.success(request, 'Thank you! Message sent.')
                 return redirect('contact')
         else:
+            # THIS IS CRITICAL: This will show in your Vercel logs if validation fails
+            print(f"FORM ERRORS: {form.errors.as_text()}")
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
                     'success': False,
@@ -74,8 +79,4 @@ def contact(request):
     else:
         form = ContactForm()
     
-    context = {
-        'form': form,
-        'page_title': 'Contact - Let\'s Build AI Solutions Together'
-    }
-    return render(request, 'pages/contact.html', context)
+    return render(request, 'pages/contact.html', {'form': form})
