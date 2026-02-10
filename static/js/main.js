@@ -871,7 +871,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 • <i>Ask for a skill and I can elaborate further.</i>`
         },{
             q: /\b(contact|email|reach|connect|linkedin)\b/i,
-            a: `📧 <b>Contact:</b> Use the Contact form on the site for a direct reply, or message me on <a href="https://linkedin.com/in/PUT-YOUR-LINKEDIN" target="_blank">LinkedIn</a>. Always happy to network or discuss opportunities!`
+            a: `📧 <b>Contact:</b> Use the Contact form on the site for a direct reply, or message me on <a href="https://www.linkedin.com/in/ahmed-naeem-8a4a702b8" target="_blank">LinkedIn</a>. Always happy to network or discuss opportunities!`
         },{
             q: /\b(download|file|pdf|copy|resume|cv)\b/i,
             a: () => `You can <a href="${cvURL}" target="_blank">download my full CV here</a>.<br>
