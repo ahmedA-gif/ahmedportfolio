@@ -193,19 +193,62 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnLoading = submitBtn.querySelector('.btn-loading');
     
     form.addEventListener('submit', function(e) {
-        // REMOVED: e.preventDefault() 
-        // By removing it, the form will now actually submit to your database.
+        e.preventDefault(); // Stop the page from reloading
         
-        // Show loading state so the user sees the "AI" animation while the DB saves
+        // 1. Show loading state
         submitBtn.classList.add('loading');
+        submitBtn.disabled = true; 
         btnText.style.display = 'none';
         btnLoading.style.display = 'flex';
         
-        // No setTimeout needed! The page will naturally refresh 
-        // once Django confirms the data is saved in Neon.
+        // 2. Collect the data from the form
+        const formData = new FormData(form);
+        
+        // 3. Send the data to your Django view
+        fetch(window.location.href, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                // This header tells Django's view it's an AJAX request
+                'X-Requested-With': 'XMLHttpRequest',
+                // The CSRF token is required for security
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Success! Match the Django view JSON response
+                alert(data.message || 'Thank you! Your message has been sent successfully.');
+                form.reset();
+                // Remove focus classes from fields
+                form.querySelectorAll('.form-group').forEach(group => group.classList.remove('focused'));
+            } else {
+                // Handle form validation errors (e.g., email invalid)
+                let errors = "";
+                for (let field in data.errors) {
+                    errors += `${field}: ${data.errors[field].join(', ')}\n`;
+                }
+                alert('Please fix the following errors:\n' + errors);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Something went wrong. Please check your connection and try again.');
+        })
+        .finally(() => {
+            // 4. Reset button state regardless of success or failure
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+            btnText.style.display = 'flex';
+            btnLoading.style.display = 'none';
+        });
     });
     
-    // Keep the focus effects (they look great!)
+    // Maintain your existing focus effects
     const formFields = form.querySelectorAll('input, select, textarea');
     formFields.forEach(field => {
         field.addEventListener('focus', function() {
