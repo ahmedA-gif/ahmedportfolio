@@ -11,7 +11,7 @@ SECRET_KEY = '(o92d772y%4_apz5o3c+x3!worj)oe5iaf638(=357kb!z)0zp'
 DEBUG = True
 ALLOWED_HOSTS = ['*','.vercel.app', 'localhost', '127.0.0.1','ahmedportfolio-iota.vercel.app']
 CSRF_TRUSTED_ORIGINS = [
-    'https://ahmedportfolio-iota.vercel.app',  
+    'https://ahmedportfolio-iota.vercel.app',
     'https://*.vercel.app'
 ]
 # Installed apps
@@ -130,7 +130,7 @@ if DEBUG:
     SECURE_HSTS_SECONDS = 0
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
     SECURE_HSTS_PRELOAD = False
-    
+
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True

@@ -480,6 +480,10 @@ class AIPortfolio {
             if (!submitBtn) return;
             
             const originalText = submitBtn.innerHTML;
+            const formData = new FormData(contactForm);
+            
+            // Get CSRF Token from the form
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             
             // AI Loading animation
             submitBtn.innerHTML = `
@@ -491,14 +495,30 @@ class AIPortfolio {
             submitBtn.disabled = true;
 
             try {
-                // Simulate form processing
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                this.showAINotification('Thank you! Your message has been received. I\'ll get back to you soon!', 'success');
-                contactForm.reset();
-                this.createSuccessEffect();
+                // ACTUAL DATA SUBMISSION TO DJANGO
+                const response = await fetch(contactForm.action || '/contact/', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    this.showAINotification(data.message || 'Message received!', 'success');
+                    contactForm.reset();
+                    this.createSuccessEffect();
+                } else {
+                    // Show validation errors from Django
+                    const errorMsg = Object.values(data.errors).flat().join(' ');
+                    this.showAINotification('Error: ' + errorMsg, 'error');
+                }
             } catch (error) {
-                this.showAINotification('Connection error. Please try again.', 'error');
+                console.error('Submission error:', error);
+                this.showAINotification('Connection error to server.', 'error');
             } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
